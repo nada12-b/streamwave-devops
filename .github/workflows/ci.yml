@@ -2,9 +2,9 @@ name: CI/CD StreamWave
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -14,22 +14,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
       - name: Build backend image
         run: docker build -t streamwave-backend ./backend
 
-      - name: Test backend container
+      - name: Run backend container for test
         run: |
-          docker run -d -p 5000:5000 streamwave-backend
-          echo "⏳ Attente du démarrage du backend..."
+          docker run -d -p 8080:8080 streamwave-backend
+          echo "Waiting for backend to start..."
           sleep 10
-          curl -f http://localhost:5000 || (echo "Backend test failed" && exit 1)
+          curl -f http://localhost:8080 || (echo "Backend test failed" && exit 1)
 
       - name: Build frontend image
-        run: docker build -t streamwave-frontend ./frontend || echo "Static site OK"
+        run: docker build -t streamwave-frontend ./frontend || echo "Frontend OK"
 
-      - name: Pipeline complete
-        run: echo "Build et tests passés avec succès !"
+      - name: CI/CD pipeline completed
+        run: echo "✅ StreamWave CI/CD pipeline executed successfully!"
 

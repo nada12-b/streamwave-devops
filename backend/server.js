@@ -1,6 +1,12 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-app.get("/", (req, res) => res.send("🎬 StreamWave API running 
-successfully!"));
-app.listen(5000, () => console.log("Backend running on port 5000"));
+const PORT = process.env.PORT || 8080;
+
+app.get('/', (req, res) => {
+  res.send('🚀 Backend StreamWave en ligne !');
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Serveur backend démarré sur le port ${PORT}`);
+});
 
