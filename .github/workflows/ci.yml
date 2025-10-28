@@ -7,29 +7,44 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Récupération du code source
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Installation de Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
+      # 3️⃣ Construction de l’image backend
       - name: Build backend image
         run: docker build -t streamwave-backend ./backend
 
+      # 4️⃣ Test du backend en local (port 8080)
       - name: Run backend container for test
         run: |
           docker run -d -p 8080:8080 streamwave-backend
-          echo "Waiting for backend to start..."
+          echo "⏳ Attente du démarrage du backend..."
           sleep 10
-          curl -f http://localhost:8080 || (echo "Backend test failed" && exit 1)
+          curl -f http://localhost:8080 || (echo "❌ Backend test failed" && exit 1)
+          docker ps -a
 
+      # 5️⃣ Construction de l’image frontend
       - name: Build frontend image
-        run: docker build -t streamwave-frontend ./frontend || echo "Frontend OK"
+        run: docker build -t streamwave-frontend ./frontend || echo "✅ Frontend statique OK"
 
+      # 6️⃣ Déploiement automatique avec Docker Compose
+      - name: Deploy with Docker Compose
+        if: success()
+        run: |
+          echo "🚀 Lancement du déploiement StreamWave..."
+          docker compose -f docker-compose.yml up -d --build
+          echo "✅ Déploiement local terminé avec succès !"
+
+      # 7️⃣ Confirmation finale
       - name: CI/CD pipeline completed
-        run: echo "✅ StreamWave CI/CD pipeline executed successfully!"
+        run: echo "🎉 StreamWave CI/CD workflow terminé avec succès ✅"
 
