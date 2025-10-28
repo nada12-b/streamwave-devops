@@ -44,3 +44,4 @@ jobs:
 # retry docker login
 # fix docker secrets
 # retry docker login fix
+# fix docker login nada2200
