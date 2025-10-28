@@ -25,8 +25,7 @@ jobs:
           docker run -d -p 5000:5000 streamwave-backend
           echo "⏳ Attente du démarrage du backend..."
           sleep 10
-          curl -f http://localhost:5000 || (echo "❌ Backend test failed" 
-&& exit 1)
+          curl -f http://localhost:5000 || (echo "❌ Backend test failed" && exit 1)
 
       - name: 🌐 Build frontend image
         run: docker build -t streamwave-frontend ./frontend || echo 
