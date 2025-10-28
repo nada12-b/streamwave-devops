@@ -11,26 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🧭 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🐳 Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: 🧱 Build backend image
+      - name: Build backend image
         run: docker build -t streamwave-backend ./backend
 
-      - name: 🔍 Test backend container
+      - name: Test backend container
         run: |
           docker run -d -p 5000:5000 streamwave-backend
           echo "⏳ Attente du démarrage du backend..."
           sleep 10
-          curl -f http://localhost:5000 || (echo "❌ Backend test failed" && exit 1)
+          curl -f http://localhost:5000 || (echo "❌ Backend test failed" 
+&& exit 1)
 
-      - name: 🌐 Build frontend image
+      - name: Build frontend image
         run: docker build -t streamwave-frontend ./frontend || echo 
 "Static site OK"
 
-      - name: ✅ Pipeline complete
+      - name: Pipeline complete
         run: echo "🎉 Build et tests passés avec succès !"
 
