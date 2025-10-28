@@ -40,3 +40,4 @@ jobs:
       - name: ✅ Pipeline completed
         run: echo "🎉 StreamWave CI/CD déployé sur Docker Hub avec succès !"
 
+# retry docker login
