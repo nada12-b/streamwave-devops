@@ -42,3 +42,4 @@ jobs:
 # ✅ Docker Hub login test successful (Nada)
 
 # retry docker login
+# fix docker secrets
