@@ -3,48 +3,40 @@ name: CI/CD StreamWave
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupération du code source
+      # 1️⃣ Cloner le dépôt
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Installation de Docker
+      # 2️⃣ Installer Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
-      # 3️⃣ Construction de l’image backend
-      - name: Build backend image
-        run: docker build -t streamwave-backend ./backend
+      # 3️⃣ Connexion à Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 4️⃣ Test du backend en local (port 8080)
-      - name: Run backend container for test
+      # 4️⃣ Build et push de l’image backend
+      - name: Build and push backend image
         run: |
-          docker run -d -p 8080:8080 streamwave-backend
-          echo "⏳ Attente du démarrage du backend..."
-          sleep 10
-          curl -f http://localhost:8080 || (echo "❌ Backend test failed" && exit 1)
-          docker ps -a
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/streamwave-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/streamwave-backend:latest
 
-      # 5️⃣ Construction de l’image frontend
-      - name: Build frontend image
-        run: docker build -t streamwave-frontend ./frontend || echo "✅ Frontend statique OK"
-
-      # 6️⃣ Simulation du déploiement (au lieu du vrai Docker Compose)
-      - name: Simulate deployment (CI/CD demo)
-        if: success()
+      # 5️⃣ Build et push de l’image frontend
+      - name: Build and push frontend image
         run: |
-          echo "🚀 Simulation du déploiement StreamWave..."
-          echo "🧩 Backend et Frontend construits avec succès."
-          echo "✅ Pipeline CI/CD complet et prêt pour un vrai déploiement cloud."
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/streamwave-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/streamwave-frontend:latest
 
-      # 7️⃣ Confirmation finale
-      - name: CI/CD pipeline completed
-        run: echo "🎉 StreamWave CI/CD workflow terminé avec succès ✅"
+      # 6️⃣ Fin du pipeline
+      - name: ✅ Pipeline completed
+        run: echo "🎉 StreamWave CI/CD déployé sur Docker Hub avec succès !"
 
