@@ -49,8 +49,8 @@ jobs:
           sleep 15
           echo "🌍 Check backend (8080)"
           curl -f http://localhost:8080
-          echo "🌐 Check frontend (8081)"
-          curl -f http://localhost:8081
+          echo "🌐 Check frontend (80)"
+          curl -f http://localhost
           docker ps
 
       # 7️⃣ Fin du pipeline
