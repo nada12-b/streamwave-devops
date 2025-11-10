@@ -74,9 +74,7 @@ https://streamwave-frontend.up.railway.app
 ---
 
 ## ✅ Exécution locale
-
-### 1️⃣ Cloner le dépôt
-```bash
+ 1️⃣ Cloner le dépôt
 git clone https://github.com/nada12-b/streamwave-devops.git
 cd streamwave-devops 
 2️⃣ Lancer les conteneurs
