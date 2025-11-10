@@ -1,33 +1,32 @@
 version: "3.8"
 
 services:
-  frontend:
-    image: nginx:latest
-    container_name: streamwave_frontend
+  mongo:
+    image: mongo:latest
+    container_name: streamwave_mongo
     ports:
-      - "8080:80"
+      - "27017:27017"
     volumes:
-      - ./frontend:/usr/share/nginx/html
-    depends_on:
-      - backend
+      - mongo_data:/data/db
 
   backend:
     build: ./backend
     container_name: streamwave_backend
     ports:
-      - "5000:5000"
+      - "8080:8080"
     environment:
-      - DB_HOST=mongo
+      - MONGO_URL=mongodb://mongo:27017/streamwave
+      - PORT=8080
     depends_on:
       - mongo
 
-  mongo:
-    image: mongo:latest
-    container_name: streamwave_mongo
-    volumes:
-      - mongo_data:/data/db
+  frontend:
+    build: ./frontend
+    container_name: streamwave_frontend
     ports:
-      - "27017:27017"
+      - "8081:80"
+    depends_on:
+      - backend
 
 volumes:
   mongo_data:
