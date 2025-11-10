@@ -83,5 +83,5 @@ cd streamwave-devops
 docker-compose up --build
 
 ###3️⃣ Accéder à l’application
-Frontend → http://localhost:80
+Frontend → [http://localhost:80](http://localhost:8081)
 Backend API → http://localhost:8080
