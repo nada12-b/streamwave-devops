@@ -40,8 +40,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/streamwave-frontend:latest
 
-      # 6️⃣ Test intégration complète avec Docker Compose (Mongo + Backend + 
-Frontend)
+      # 6️⃣ Test intégration complète avec Docker Compose (Mongo + Backend + Frontend)
       - name: Test full environment with Docker Compose
         run: |
           docker compose down || true
