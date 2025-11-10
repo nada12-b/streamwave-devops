@@ -78,6 +78,9 @@ https://streamwave-frontend.up.railway.app
 ### 1️⃣ Cloner le dépôt
 ```bash
 git clone https://github.com/nada12-b/streamwave-devops.git
-cd streamwave-devops
-
-
+cd streamwave-devops 
+2️⃣ Lancer les conteneurs
+docker-compose up --build
+3️⃣ Accéder à l’application
+Frontend → http://localhost:80
+Backend API → http://localhost:8080
